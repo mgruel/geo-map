@@ -56,9 +56,6 @@
 	<style>
     .leaflet-control-jump-to {
       background: rgba(255, 255, 255, 1.0);
-      border: 0;
-			border-bottom: 1px solid black;
-			border-right: 1px solid black;
 			padding: 0 3px;
       
 			margin-top: 0 !important;
@@ -69,10 +66,9 @@
 		.leaflet-control-jump-to-input,
     .leaflet-control-jump-to-input:active,
     .leaflet-control-jump-to-input:focus {
-      outline: none;
+      outline: none !important;
 			border: 0;
-			padding: 2px 5px 1px;
-			border-radius: 3px;
+			margin-left: 2px;
 		}
 	</style>
 </svelte:head>
