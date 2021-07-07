@@ -57,7 +57,5 @@
 			margin-left: 0 !important;
 			margin-right: 0 !important;
 		}
-
-		.leaflet-control-coords-output {}
 	</style>
 </svelte:head>
