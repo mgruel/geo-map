@@ -49,20 +49,15 @@
 
 <svelte:head>
 	<style>
-		.leaflet-control-coords {
-			border: 0;
-			border-top: 1px solid black;
-			border-right: 1px solid black;
-    
+		.leaflet-control-coords {   
+			background: rgba(255, 255, 255, 1.0);
+			padding: 0 3px;
 			margin-top: 0 !important;
 			margin-bottom: 0 !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
 		}
 
-		.leaflet-control-coords-output {
-			background: rgba(255, 255, 255, 1.0);
-			padding: 0 3px;
-		}
+		.leaflet-control-coords-output {}
 	</style>
 </svelte:head>
