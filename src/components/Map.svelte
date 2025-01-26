@@ -1,21 +1,23 @@
 <style>
+    @import 'leaflet/dist/leaflet.css';
+
     .map {
         width: 100%;
         height: 100%;
     }
 </style>
 
-<script>
+<script lang="ts">
     import { setContext } from "svelte";
     import L from "leaflet";
     
-    let map;
+    let map: L.Map;
     
     setContext(L, {
         getMap: () => map
     });
     
-    function createMap(container) {
+    function createMap(container: HTMLElement) {
         map = L.map(container, {
             center: [48.594662,8.867683],
             zoom: 11,

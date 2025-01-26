@@ -1,44 +1,20 @@
-# Geo-Map
+# Geo Map with [Leaflet](https://leafletjs.com) and [Svelte](https://svelte.dev)
 
-This project was made with [Svelte](https://svelte.dev) and [Leaflet](https://leafletjs.com).
+## Developing
 
-It uses map tiles provided by [Carto](https://carto.com/attribution/)
-
-## Get started
-
-Install the dependencies...
+Once you checked out the project, you can start developing by running the following commands:
 
 ```bash
-cd geo-map
-npm ci
+npm install # install dependencies
+npm run dev # start the development server
 ```
 
-...then start [Rollup](https://rollupjs.org):
+## Building
 
-```bash
-npm run dev
-```
-
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
+To create a production version of your app:
 
 ```bash
 npm run build
 ```
 
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `dist`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for _any_ path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv dist --no-clear"
-```
+You can preview the production build with `npm run preview`.

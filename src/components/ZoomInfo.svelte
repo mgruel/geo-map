@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
     import { getContext } from "svelte";
     import L from "leaflet";
     
-    const { getMap } = getContext(L);
+    const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
     L.Control.ZoomInfo = L.Control.extend({
         options: {
@@ -10,7 +10,7 @@
             updateWhenIdle: false,
         },
 
-        onAdd: function(map) {
+        onAdd: function(map: L.Map) {
             let className = "leaflet-control-zoom-info";
             let container = L.DomUtil.create("div", className);
 
@@ -23,7 +23,7 @@
             return container;
         },
 
-        _addOutput: function(className, container) {
+        _addOutput: function(className: string, container: HTMLElement) {
             this._output = L.DomUtil.create("div", className, container);
         },
 
@@ -32,7 +32,7 @@
             this._output.innerHTML = `Zoom: ${zoom}`;
         },
 
-        onRemove: function(map) {
+        onRemove: function(map: L.Map) {
             map.off(this.options.updateWhenIdle ? "dragend" : "drag", this._update, this);
             map.off(this.options.updateWhenIdle ? "zoomend" : "zoom", this._update, this);
         }
