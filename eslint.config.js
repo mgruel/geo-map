@@ -1,6 +1,7 @@
-import stylisticjs from "@stylistic/eslint-plugin-js";
-import svelte from "eslint-plugin-svelte";
+import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import globals from "globals";
+import tsParser from "@typescript-eslint/parser";
+import parser from "svelte-eslint-parser";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
@@ -16,31 +17,52 @@ const compat = new FlatCompat({
 
 export default [{
     ignores: [
+        "**/.DS_Store",
         "**/node_modules",
-        "**/dist",
-        "**/public",
-        "**/rollup.config.js",
-        "**/.github",
+        "build",
+        ".svelte-kit",
+        "package",
+        "**/.env",
+        "**/.env.*",
+        "!**/.env.example",
+        "**/pnpm-lock.yaml",
+        "**/package-lock.json",
+        "**/yarn.lock",
     ],
-}, ...compat.extends("eslint:recommended", "plugin:svelte/recommended"), {
+}, ...compat.extends(
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:svelte/recommended",
+    "prettier",
+), {
     plugins: {
-        "@stylistic/js": stylisticjs,
-        svelte,
+        "@typescript-eslint": typescriptEslint,
     },
 
     languageOptions: {
         globals: {
             ...globals.browser,
+            ...globals.node,
         },
 
-        ecmaVersion: 2022,
+        parser: tsParser,
+        ecmaVersion: 2020,
         sourceType: "module",
-    },
 
-    rules: {
-        "@stylistic/js/indent": ["error", 4],
-        "linebreak-style": ["error", "unix"],
-        quotes: ["error", "double"],
-        semi: ["error", "always"],
+        parserOptions: {
+            extraFileExtensions: [".svelte"],
+        },
+    },
+}, {
+    files: ["**/*.svelte"],
+
+    languageOptions: {
+        parser: parser,
+        ecmaVersion: 5,
+        sourceType: "script",
+
+        parserOptions: {
+            parser: "@typescript-eslint/parser",
+        },
     },
 }];

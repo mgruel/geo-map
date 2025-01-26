@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
     import { getContext } from "svelte";
     import L from "leaflet";
     
-    const { getMap } = getContext(L);
+    const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
     const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
         subdomains: "abc",
-        minzoom: 7,
+        minZoom: 7,
         maxZoom: 19
     }).addTo(getMap());
 

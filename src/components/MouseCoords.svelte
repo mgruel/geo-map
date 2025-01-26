@@ -1,15 +1,15 @@
-<script>
+<script lang="ts">
     import { getContext } from "svelte";
     import L from "leaflet";
     
-    const { getMap } = getContext(L);
+    const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
     L.Control.MouseCoords = L.Control.extend({
         options: {
             position: "topright"
         },
 
-        onAdd: function(map) {
+        onAdd: function(map: L.Map) {
             let className = "leaflet-control-mouse-coords";
             let container = L.DomUtil.create("div", className);
 
@@ -21,11 +21,11 @@
             return container;
         },
 
-        _addOutput: function(className, container) {
+        _addOutput: function(className: string, container: HTMLElement) {
             this._output = L.DomUtil.create("div", className, container);
         },
 
-        _update: function(event) {
+        _update: function(event: Event) {
             if (event) {
                 let coords = event.latlng ?? this._map.getCenter();
                 this._output.innerHTML = `Mouse: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`;
@@ -35,7 +35,7 @@
             }
         },
 
-        onRemove: function(map) {
+        onRemove: function(map: L.Map) {
             map.off("mousemove", this._update, this);
         }
     });

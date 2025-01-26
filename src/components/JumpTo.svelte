@@ -1,8 +1,8 @@
-<script>
-    import { getContext } from "svelte";
+<script lang="ts">
     import L from "leaflet";
+    import { getContext } from "svelte";
     
-    const { getMap } = getContext(L);
+    const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
     L.Control.JumpTo = L.Control.extend({
         options: {
@@ -19,17 +19,17 @@
             return container;
         },
 
-        _addLabel: function (className, container) {
+        _addLabel: function (className: string, container: HTMLElement) {
             this._label = L.DomUtil.create("span", className, container);
             this._label.innerHTML = "Jump to:";
         },
 
-        _addInput: function (className, container) {
+        _addInput: function (className: string, container: HTMLElement) {
             this._input = L.DomUtil.create("input", className, container);
             this._input.addEventListener("keydown", this._update.bind(this));
         },
 
-        _update: function (event) {
+        _update: function (event: KeyboardEvent) {
             if (event.key === "Enter") {
                 const coords = this?._input.value.split(",");
                 console.debug(coords);
@@ -54,19 +54,20 @@
 
 <svelte:head>
     <style>
-    .leaflet-control-jump-to {
-      background: rgba(255, 255, 255, 1.0);
+        .leaflet-control-jump-to {
+            background: rgba(255, 255, 255, 1.0);
             padding: 0 3px;
-      
+
             margin-top: 0 !important;
             margin-bottom: 0 !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
-    }
+        }
+
         .leaflet-control-jump-to-input,
-    .leaflet-control-jump-to-input:active,
-    .leaflet-control-jump-to-input:focus {
-      outline: none !important;
+        .leaflet-control-jump-to-input:active,
+        .leaflet-control-jump-to-input:focus {
+            outline: none !important;
             border: 0;
             margin-left: 2px;
         }
