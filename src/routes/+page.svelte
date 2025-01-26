@@ -7,6 +7,7 @@
 	import ScaleControl from "../components/ScaleControl.svelte";
 	import TileLayer from "../components/TileLayer.svelte";
 	import ZoomControl from "../components/ZoomControl.svelte";
+	import ZoomInfo from "../components/ZoomInfo.svelte";
 </script>
 
 <svelte:head>
@@ -21,4 +22,5 @@
 	<ScaleControl />
 	<TileLayer />
 	<ZoomControl />
+	<ZoomInfo />
 </Map>

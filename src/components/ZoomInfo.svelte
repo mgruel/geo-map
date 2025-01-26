@@ -47,16 +47,12 @@
 
 <svelte:head>
     <style>
-        .leaflet-control-zoom-info {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
         .leaflet-control-zoom-info-output {
             background: rgba(255, 255, 255, 1.0);
-            padding: 0 3px;
+            border: 2px solid rgba(0, 0, 0, 0.35);
+            padding: 2px 5px 1px;
+            font-size: 14px;
+            border-radius: 3px;
         }
     </style>
 </svelte:head>
