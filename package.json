@@ -37,7 +37,7 @@
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^2.46.1",
 		"globals": "^15.14.0",
-		"happy-dom": "^16.5.3",
+		"happy-dom": "^17.0.0",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"svelte": "^5.19.5",
@@ -46,7 +46,7 @@
 		"tslib": "^2.8.1",
 		"typescript": "^5.7.3",
 		"vite": "^6.0.7",
-		"vitest": "^3.0.4"
+		"vitest": "^3.0.5"
 	},
 	"overrides": {
 		"cookie": "^0.7.2"
