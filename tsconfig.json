@@ -10,7 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"ignoreDeprecations": "5.0",
-		"types": ["vitest/globals", "@testing-library/jest-dom"]
+		"types": ["vitest/globals", "@testing-library/jest-dom", "types"]
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

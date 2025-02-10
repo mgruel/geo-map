@@ -11,10 +11,10 @@
         },
 
         onAdd: function(map: L.Map) {
-            let className = "leaflet-control-zoom-info";
-            let container = L.DomUtil.create("div", className);
+            const className = "leaflet-control-zoom-info";
+            const container = L.DomUtil.create("div", className);
 
-            this._addOutput(`${className}-output`, container);
+            this._output = L.DomUtil.create('div', `${className}__output`, container);
 
             map.on(this.options.updateWhenIdle ? "dragend" : "drag", this._update, this);
             map.on(this.options.updateWhenIdle ? "zoomend" : "zoom", this._update, this);
@@ -23,12 +23,8 @@
             return container;
         },
 
-        _addOutput: function(className: string, container: HTMLElement) {
-            this._output = L.DomUtil.create("div", className, container);
-        },
-
         _update: function() {
-            let zoom = this._map.getZoom();
+            const zoom = this._map.getZoom();
             this._output.innerHTML = `Zoom: ${zoom}`;
         },
 
@@ -47,7 +43,7 @@
 
 <svelte:head>
     <style>
-        .leaflet-control-zoom-info-output {
+        .leaflet-control-zoom-info {
             background: rgba(255, 255, 255, 1.0);
             border: 2px solid rgba(0, 0, 0, 0.35);
             padding: 2px 5px 1px;

@@ -13,8 +13,8 @@
             const className = "leaflet-control-jump-to";
             const container = L.DomUtil.create("div", className);
 
-            this._addLabel(`${className}-label`, container);
-            this._addInput(`${className}-input`, container);
+            this._addLabel(`${className}__label`, container);
+            this._addInput(`${className}__input`, container);
 
             return container;
         },
@@ -26,22 +26,36 @@
 
         _addInput: function (className: string, container: HTMLElement) {
             this._input = L.DomUtil.create("input", className, container);
-            this._input.addEventListener("keydown", this._update.bind(this));
+            L.DomEvent.on(this._input, {
+                "beforeinput": this._handleInput,
+                "keydown": this._update,
+            }, this);
+        },
+
+        _handleInput: function (event: KeyboardEvent) {
+            if(event.inputType === 'insertText' && !/^[\d,.]$/.test(event.data ?? '')) {
+                event.preventDefault();
+            }
+            return;
         },
 
         _update: function (event: KeyboardEvent) {
-            if (event.key === "Enter") {
-                const coords = this?._input.value.split(",");
-                console.debug(coords);
-                if (coords.length >= 2) {
-                    this._map.flyTo(coords, this._map.getZoom(), { animate: true });
-                    this._input.value = null;
+            switch (event.key) {
+                case "Enter": {
+                    const coords = this._input?.value.split(",");
+                    if (coords.length >= 2) {
+                        this._map.flyTo(coords, this._map.getZoom(), { animate: true });
+                        this._input.value = null;
+                    }
                 }
             }
         },
 
         onRemove: function () {
-            this._input.removeEventListener("keydown", this._update);
+            L.DomEvent.off(this._input, {
+                "beforeinput": this._handleInput,
+                "keydown": this._update,
+            }, this);
         }
     });
 
@@ -56,17 +70,15 @@
     <style>
         .leaflet-control-jump-to {
             background: rgba(255, 255, 255, 1.0);
-            padding: 0 3px;
-
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
+            border: 2px solid rgba(0, 0, 0, 0.35);
+            padding: 2px 5px 1px;
+            font-size: 14px;
+            border-radius: 3px;
         }
 
-        .leaflet-control-jump-to-input,
-        .leaflet-control-jump-to-input:active,
-        .leaflet-control-jump-to-input:focus {
+        .leaflet-control-jump-to__input,
+        .leaflet-control-jump-to__input:active,
+        .leaflet-control-jump-to__input:focus {
             outline: none !important;
             border: 0;
             margin-left: 2px;

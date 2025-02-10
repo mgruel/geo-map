@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { getContext } from "svelte";
     import L from "leaflet";
+    import { getContext } from "svelte";
     
     const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
@@ -12,10 +12,10 @@
         },
 
         onAdd: function(map: L.Map) {
-            let className = "leaflet-control-coords";
-            let container = L.DomUtil.create("div", className);
+            const className = "leaflet-control-coords";
+            const container = L.DomUtil.create("div", className);
 
-            this._addOutput(`${className}-output`, container);
+            this._output = L.DomUtil.create("div", `${className}__output`, container);
 
             map.on(this.options.updateWhenIdle ? "dragend" : "drag", this._update, this);
             map.on(this.options.updateWhenIdle ? "zoomend" : "zoom", this._update, this);
@@ -24,13 +24,9 @@
             return container;
         },
 
-        _addOutput: function(className: string, container: HTMLElement) {
-            this._output = L.DomUtil.create("div", className, container);
-        },
-
         _update: function() {
-            let center = this._map.getCenter();
-            let zoom = this._map.getZoom();
+            const center = this._map.getCenter();
+            const zoom = this._map.getZoom();
             this._output.innerHTML = `Center: ${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
         },
 
@@ -44,18 +40,17 @@
         return new L.Control.Coords(options);
     };
     
-    L.control.coords({ position: "bottomleft", displayZoom: true }).addTo(getMap());
+    L.control.coords({ position: "bottomleft" }).addTo(getMap());
 </script>
 
 <svelte:head>
     <style>
-        .leaflet-control-coords {   
+        .leaflet-control-coords {
             background: rgba(255, 255, 255, 1.0);
-            padding: 0 3px;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
+            border: 2px solid rgba(0, 0, 0, 0.35);
+            padding: 2px 5px 1px;
+            font-size: 14px;
+            border-radius: 3px;
         }
     </style>
 </svelte:head>
