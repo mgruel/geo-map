@@ -1,24 +1,15 @@
 <script lang="ts">
-    import { getContext } from "svelte";
     import L from "leaflet";
+    import { getContext } from "svelte";
     
     const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
-    const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
         subdomains: "abc",
         minZoom: 7,
         maxZoom: 19
     }).addTo(getMap());
 
-    // Disabled because it's should not be used
-    // const createCartoUrl = (style) => `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}${L.Browser.retina ? "@2x.png" : ".png"}`;
-    // const voyager = L.tileLayer(createCartoUrl("rastertiles/voyager"), {
-    //     attribution: "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>, &copy; <a href=\"https://carto.com/attributions\">CARTO</a>",
-    //     subdomains: "abcd",
-    //     minZoom: 7,
-    //     maxZoom: 20
-    // });
-
-    L.control.layers({ osm }, {}, { collapsed: true, hideSingleBase: false, position: "topright" }).addTo(getMap());
+    // L.control.layers({ osm }, {}, { collapsed: true, hideSingleBase: true, position: "topright" }).addTo(getMap());
 </script>

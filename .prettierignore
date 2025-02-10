@@ -1,2 +1,5 @@
 **/*
 !src/**/*
+!eslint.config.js
+!rollup.config.js
+!vite.config.ts

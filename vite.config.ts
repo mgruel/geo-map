@@ -1,9 +1,14 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { svelteTesting } from '@testing-library/svelte/vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
 
 export default defineConfig({
 	plugins: [sveltekit(), svelteTesting()],
+	define: {
+		// Eliminate in-source test code
+		'import.meta.vitest': 'undefined'
+	},
 	test: {
 		globals: true,
 		environment: 'happy-dom',
@@ -19,6 +24,7 @@ export default defineConfig({
 			json: './coverage/coverage.json',
 			junit: './coverage/junit.xml',
 			clover: './coverage/clover.xml'
-		}
+		},
+		exclude: [...configDefaults.exclude]
 	}
 });
