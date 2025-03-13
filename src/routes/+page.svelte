@@ -14,9 +14,9 @@
 
 <Map>
 	<TileLayer />
-	<ScaleControl />
 	<AttributionControl />
+	<JumpTo />
+	<ScaleControl />
 	<MouseCoords />
 	<ZoomControl />
-	<JumpTo />
 </Map>
