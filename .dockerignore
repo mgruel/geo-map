@@ -1,0 +1,17 @@
+*
+*/*
+!.svelte-kit/tsconfig.json
+!src
+!static
+!types
+!.gitignore
+!.prettierignore
+!.prettierrc
+!eslint.config.js
+!package.json
+!package-lock.json
+!rollup.config.js
+!svelte.config.js
+!tsconfig.json
+!vite.config.ts
+!vitest-setup.ts
