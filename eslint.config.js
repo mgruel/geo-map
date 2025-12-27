@@ -1,34 +1,53 @@
+import stylistic from '@stylistic/eslint-plugin';
+import gitignore from 'eslint-config-flat-gitignore';
 import prettier from 'eslint-config-prettier';
-import js from '@eslint/js';
-import { includeIgnoreFile } from '@eslint/compat';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
-import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
-const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
+import { defineConfig } from 'vite';
 
-export default ts.config(
-	includeIgnoreFile(gitignorePath),
-	js.configs.recommended,
-	...ts.configs.recommended,
-	...svelte.configs['flat/recommended'],
-	prettier,
-	...svelte.configs['flat/prettier'],
-	{
-		languageOptions: {
-			globals: {
-				...globals.browser,
-				...globals.node
-			}
-		}
-	},
-	{
-		files: ['**/*.svelte'],
-
-		languageOptions: {
-			parserOptions: {
-				parser: ts.parser
-			}
-		}
-	}
+export default defineConfig(
+    gitignore({
+        files: ['.gitignore', '.prettierignore']
+    }),
+    {
+        plugins: {
+            '@stylistic': stylistic
+        }
+    },
+    stylistic.configs.customize({
+        // the following options are the default values
+        indent: 2,
+        indentType: 'space',
+        quotes: 'single',
+        semi: false,
+        jsx: true
+        // ...
+    }),
+    ...ts.configs.recommended,
+    ...svelte.configs['flat/recommended'],
+    prettier,
+    ...svelte.configs['flat/prettier'],
+    {
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node
+            }
+        }
+    },
+    {
+        rules: {
+            '@stylistic/indent': ['error', 2],
+            '@stylistic/semi': ['error', 'always']
+        }
+    },
+    {
+        files: ['**/*.svelte'],
+        languageOptions: {
+            parserOptions: {
+                parser: ts.parser
+            }
+        }
+    }
 );
