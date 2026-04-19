@@ -27,7 +27,7 @@
         _update: function(this: L.Control.Coords) {
             const center = this._map.getCenter();
             const zoom = this._map.getZoom();
-            this._output.innerHTML = `Center: ${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
+            this._output.textContent = `Center: ${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
         },
 
         onRemove: function(this: L.Control.Coords, map: L.Map) {

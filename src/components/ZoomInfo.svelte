@@ -25,7 +25,7 @@
 
         _update: function(this: L.Control.ZoomInfo) {
             const zoom = this._map.getZoom();
-            this._output.innerHTML = `Zoom: ${zoom}`;
+            this._output.textContent = `Zoom: ${zoom}`;
         },
 
         onRemove: function(this: L.Control.ZoomInfo, map: L.Map) {
