@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, setContext, type Snippet } from "svelte";
     import L from "leaflet";
+    import "leaflet/dist/leaflet.css";
 
     let { children }: { children?: Snippet } = $props();
 
@@ -35,8 +36,6 @@
 </div>
 
 <style>
-    @import 'leaflet/dist/leaflet.css';
-
     .map {
         width: 100%;
         height: 100%;
