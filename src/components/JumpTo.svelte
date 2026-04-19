@@ -21,7 +21,7 @@
 
         _addLabel: function (this: L.Control.JumpTo, className: string, container: HTMLElement) {
             this._label = L.DomUtil.create("span", className, container);
-            this._label.innerHTML = "Jump to:";
+            this._label.textContent = "Jump to:";
         },
 
         _addInput: function (this: L.Control.JumpTo, className: string, container: HTMLElement) {
@@ -44,10 +44,14 @@
             const key = (event as KeyboardEvent).key;
             switch (key) {
                 case "Enter": {
-                    const coords = this._input?.value.split(",");
-                    if (coords.length >= 2) {
-                        this._map.flyTo(coords as unknown as L.LatLngTuple, this._map.getZoom(), { animate: true });
-                        this._input.value = "";
+                    const parts = this._input?.value.split(",");
+                    if (parts.length >= 2) {
+                        const lat = parseFloat(parts[0]);
+                        const lng = parseFloat(parts[1]);
+                        if (!isNaN(lat) && !isNaN(lng)) {
+                            this._map.flyTo([lat, lng], this._map.getZoom(), { animate: true });
+                            this._input.value = "";
+                        }
                     }
                 }
             }

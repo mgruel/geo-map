@@ -25,7 +25,7 @@
         _update: function(this: L.Control.MouseCoords, event?: LeafletEvent) {
             const zoom = this._map.getZoom();
             const coords = (event as LeafletMouseEvent | undefined)?.latlng ?? this._map.getCenter();
-            this._output.innerHTML = `Mouse: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
+            this._output.textContent = `Mouse: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
         },
 
         onRemove: function(this: L.Control.MouseCoords, map: L.Map) {
