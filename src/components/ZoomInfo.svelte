@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getContext } from "svelte";
-    import L from "leaflet";
-    
+    import L, { type ZoomInfoOptions } from "leaflet";
+
     const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
     L.Control.ZoomInfo = L.Control.extend({
@@ -10,7 +10,7 @@
             updateWhenIdle: false,
         },
 
-        onAdd: function(map: L.Map) {
+        onAdd: function(this: L.Control.ZoomInfo, map: L.Map) {
             const className = "leaflet-control-zoom-info";
             const container = L.DomUtil.create("div", className);
 
@@ -23,18 +23,18 @@
             return container;
         },
 
-        _update: function() {
+        _update: function(this: L.Control.ZoomInfo) {
             const zoom = this._map.getZoom();
             this._output.innerHTML = `Zoom: ${zoom}`;
         },
 
-        onRemove: function(map: L.Map) {
+        onRemove: function(this: L.Control.ZoomInfo, map: L.Map) {
             map.off(this.options.updateWhenIdle ? "dragend" : "drag", this._update, this);
             map.off(this.options.updateWhenIdle ? "zoomend" : "zoom", this._update, this);
         }
-    });
+    }) as unknown as typeof L.Control.ZoomInfo;
 
-    L.control.zoomInfo = function(options) {
+    L.control.zoomInfo = function(options?: ZoomInfoOptions) {
         return new L.Control.ZoomInfo(options);
     };
     

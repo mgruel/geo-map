@@ -9,7 +9,7 @@
             position: "topleft"
         },
 
-        onAdd: function () {
+        onAdd: function (this: L.Control.JumpTo) {
             const className = "leaflet-control-jump-to";
             const container = L.DomUtil.create("div", className);
 
@@ -19,12 +19,12 @@
             return container;
         },
 
-        _addLabel: function (className: string, container: HTMLElement) {
+        _addLabel: function (this: L.Control.JumpTo, className: string, container: HTMLElement) {
             this._label = L.DomUtil.create("span", className, container);
             this._label.innerHTML = "Jump to:";
         },
 
-        _addInput: function (className: string, container: HTMLElement) {
+        _addInput: function (this: L.Control.JumpTo, className: string, container: HTMLElement) {
             this._input = L.DomUtil.create("input", className, container);
             L.DomEvent.on(this._input, {
                 "beforeinput": this._handleInput,
@@ -32,34 +32,36 @@
             }, this);
         },
 
-        _handleInput: function (event: KeyboardEvent) {
-            if(event.inputType === 'insertText' && !/^[\d,.]$/.test(event.data ?? '')) {
+        _handleInput: function (event: Event) {
+            const input = event as InputEvent;
+            if(input.inputType === 'insertText' && !/^[\d,.]$/.test(input.data ?? '')) {
                 event.preventDefault();
             }
             return;
         },
 
-        _update: function (event: KeyboardEvent) {
-            switch (event.key) {
+        _update: function (this: L.Control.JumpTo, event: Event) {
+            const key = (event as KeyboardEvent).key;
+            switch (key) {
                 case "Enter": {
                     const coords = this._input?.value.split(",");
                     if (coords.length >= 2) {
-                        this._map.flyTo(coords, this._map.getZoom(), { animate: true });
-                        this._input.value = null;
+                        this._map.flyTo(coords as unknown as L.LatLngTuple, this._map.getZoom(), { animate: true });
+                        this._input.value = "";
                     }
                 }
             }
         },
 
-        onRemove: function () {
+        onRemove: function (this: L.Control.JumpTo) {
             L.DomEvent.off(this._input, {
                 "beforeinput": this._handleInput,
                 "keydown": this._update,
             }, this);
         }
-    });
+    }) as unknown as typeof L.Control.JumpTo;
 
-    L.control.jumpTo = function(options) {
+    L.control.jumpTo = function(options?: L.ControlOptions) {
         return new L.Control.JumpTo(options);
     };
     

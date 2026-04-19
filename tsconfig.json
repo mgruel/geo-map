@@ -11,10 +11,6 @@
 		"strict": true,
 		"ignoreDeprecations": "5.0",
 		"rootDir": ".",
-		"typeRoots": [
-		  "./types",
-			"./node_modules/@types"
-		],
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

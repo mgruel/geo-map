@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext } from "svelte";
-    import L, { type ControlOptions, type LeafletEvent } from "leaflet";
+    import L, { type LeafletEvent, type LeafletMouseEvent, type MouseCoordsOptions } from "leaflet";
     
     const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
@@ -10,30 +10,30 @@
             displayZoom: false,
         },
 
-        onAdd: function(map: L.Map) {
+        onAdd: function(this: L.Control.MouseCoords, map: L.Map) {
             const className = "leaflet-control-mouse-coords";
             const container = L.DomUtil.create("div", className);
 
             this._output = L.DomUtil.create("div", `${className}__output`, container);
 
             map.on("mousemove", this._update, this);
-            map.whenReady(this._update, this);
+            map.whenReady(this._update as () => void, this);
 
             return container;
         },
 
-        _update: function(event?: LeafletEvent) {
+        _update: function(this: L.Control.MouseCoords, event?: LeafletEvent) {
             const zoom = this._map.getZoom();
-            const coords = event?.latlng ?? this._map.getCenter();
+            const coords = (event as LeafletMouseEvent | undefined)?.latlng ?? this._map.getCenter();
             this._output.innerHTML = `Mouse: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
         },
 
-        onRemove: function(map: L.Map) {
+        onRemove: function(this: L.Control.MouseCoords, map: L.Map) {
             map.off("mousemove", this._update, this);
         }
-    });
+    }) as unknown as typeof L.Control.MouseCoords;
 
-    L.control.mouseCoords = function(options: ControlOptions) {
+    L.control.mouseCoords = function(options?: MouseCoordsOptions) {
         return new L.Control.MouseCoords(options);
     };
     
