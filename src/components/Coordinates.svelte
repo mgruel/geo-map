@@ -1,7 +1,7 @@
 <script lang="ts">
-    import L from "leaflet";
+    import L, { type CoordsOptions } from "leaflet";
     import { getContext } from "svelte";
-    
+
     const { getMap } = getContext<{ getMap: () => L.Map }>(L);
 
     L.Control.Coords = L.Control.extend({
@@ -11,7 +11,7 @@
             updateWhenIdle: false,
         },
 
-        onAdd: function(map: L.Map) {
+        onAdd: function(this: L.Control.Coords, map: L.Map) {
             const className = "leaflet-control-coords";
             const container = L.DomUtil.create("div", className);
 
@@ -24,19 +24,19 @@
             return container;
         },
 
-        _update: function() {
+        _update: function(this: L.Control.Coords) {
             const center = this._map.getCenter();
             const zoom = this._map.getZoom();
             this._output.innerHTML = `Center: ${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}${ this.options.displayZoom ? ` - Zoom: ${zoom}` : ""}`;
         },
 
-        onRemove: function(map: L.Map) {
+        onRemove: function(this: L.Control.Coords, map: L.Map) {
             map.off(this.options.updateWhenIdle ? "dragend" : "drag", this._update, this);
             map.off(this.options.updateWhenIdle ? "zoomend" : "zoom", this._update, this);
         }
-    });
+    }) as unknown as typeof L.Control.Coords;
 
-    L.control.coords = function(options) {
+    L.control.coords = function(options?: CoordsOptions) {
         return new L.Control.Coords(options);
     };
     
