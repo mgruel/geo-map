@@ -5,7 +5,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"all": "run-s build test lint",
+		"all": "run-s check build lint test",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
