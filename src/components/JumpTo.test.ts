@@ -36,6 +36,17 @@ describe('JumpTo', () => {
         expect(container.querySelector('.leaflet-control-jump-to__input')).toBeInTheDocument();
     });
 
+    it('exposes accessibility attributes on the input', () => {
+        const { container } = render(JumpToFixture);
+        const input = getInput(container);
+        expect(input.getAttribute('aria-label')).toMatch(/latitude and longitude/i);
+        expect(input.getAttribute('inputmode')).toBe('decimal');
+        expect(input.getAttribute('placeholder')).toBe('lat, lng');
+        expect(input.getAttribute('autocomplete')).toBe('off');
+        const label = container.querySelector('.leaflet-control-jump-to__label');
+        expect(label?.getAttribute('aria-hidden')).toBe('true');
+    });
+
     it('flies to valid coordinates on Enter and clears the input', () => {
         const flySpy = vi.spyOn(L.Map.prototype, 'flyTo').mockReturnThis();
         const { container } = render(JumpToFixture);

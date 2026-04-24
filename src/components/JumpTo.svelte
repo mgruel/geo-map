@@ -22,10 +22,16 @@
         _addLabel: function (this: L.Control.JumpTo, className: string, container: HTMLElement) {
             this._label = L.DomUtil.create("span", className, container);
             this._label.textContent = "Jump to:";
+            this._label.setAttribute("aria-hidden", "true");
         },
 
         _addInput: function (this: L.Control.JumpTo, className: string, container: HTMLElement) {
             this._input = L.DomUtil.create("input", className, container);
+            this._input.setAttribute("aria-label", "Jump to coordinates, latitude and longitude separated by a comma");
+            this._input.setAttribute("placeholder", "lat, lng");
+            this._input.setAttribute("inputmode", "decimal");
+            this._input.setAttribute("autocomplete", "off");
+            this._input.setAttribute("spellcheck", "false");
             L.DomEvent.on(this._input, {
                 "beforeinput": this._handleInput,
                 "keydown": this._update,

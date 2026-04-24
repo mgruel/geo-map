@@ -14,6 +14,8 @@ describe('MouseCoords', () => {
         const output = container.querySelector('.leaflet-control-mouse-coords__output');
         expect(root).toBeInTheDocument();
         expect(output).toBeInTheDocument();
+        expect(root?.getAttribute('role')).toBe('status');
+        expect(root?.getAttribute('aria-label')).toBe('Mouse coordinates');
     });
 
     it('initializes with the map center coordinates', () => {

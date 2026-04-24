@@ -13,6 +13,8 @@
         onAdd: function(this: L.Control.MouseCoords, map: L.Map) {
             const className = "leaflet-control-mouse-coords";
             const container = L.DomUtil.create("div", className);
+            container.setAttribute("role", "status");
+            container.setAttribute("aria-label", "Mouse coordinates");
 
             this._output = L.DomUtil.create("div", `${className}__output`, container);
 

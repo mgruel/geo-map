@@ -13,6 +13,8 @@
         onAdd: function(this: L.Control.ZoomInfo, map: L.Map) {
             const className = "leaflet-control-zoom-info";
             const container = L.DomUtil.create("div", className);
+            container.setAttribute("role", "status");
+            container.setAttribute("aria-label", "Current zoom level");
 
             this._output = L.DomUtil.create('div', `${className}__output`, container);
 
