@@ -20,5 +20,6 @@ describe('RootPage', () => {
         expect(container.querySelector('.leaflet-control-zoom')).toBeInTheDocument();
         expect(container.querySelector('.leaflet-control-mouse-coords')).toBeInTheDocument();
         expect(container.querySelector('.leaflet-control-jump-to')).toBeInTheDocument();
+        expect(container.querySelector('.leaflet-control-geo-search')).toBeInTheDocument();
     });
 });
