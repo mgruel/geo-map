@@ -5,8 +5,11 @@ import ZoomInfoFixture from './ZoomInfo.fixture.svelte';
 describe('ZoomInfo', () => {
     it('renders an output container inside the map', () => {
         const { container } = render(ZoomInfoFixture);
-        expect(container.querySelector('.leaflet-control-zoom-info')).toBeInTheDocument();
+        const root = container.querySelector('.leaflet-control-zoom-info');
+        expect(root).toBeInTheDocument();
         expect(container.querySelector('.leaflet-control-zoom-info__output')).toBeInTheDocument();
+        expect(root?.getAttribute('role')).toBe('status');
+        expect(root?.getAttribute('aria-label')).toBe('Current zoom level');
     });
 
     it('initializes with the starting zoom level', () => {

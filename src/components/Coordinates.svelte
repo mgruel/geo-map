@@ -14,6 +14,8 @@
         onAdd: function(this: L.Control.Coords, map: L.Map) {
             const className = "leaflet-control-coords";
             const container = L.DomUtil.create("div", className);
+            container.setAttribute("role", "status");
+            container.setAttribute("aria-label", "Map center coordinates");
 
             this._output = L.DomUtil.create("div", `${className}__output`, container);
 

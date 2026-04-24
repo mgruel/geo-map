@@ -5,8 +5,11 @@ import CoordinatesFixture from './Coordinates.fixture.svelte';
 describe('Coordinates', () => {
     it('renders an output container inside the map', () => {
         const { container } = render(CoordinatesFixture);
-        expect(container.querySelector('.leaflet-control-coords')).toBeInTheDocument();
+        const root = container.querySelector('.leaflet-control-coords');
+        expect(root).toBeInTheDocument();
         expect(container.querySelector('.leaflet-control-coords__output')).toBeInTheDocument();
+        expect(root?.getAttribute('role')).toBe('status');
+        expect(root?.getAttribute('aria-label')).toBe('Map center coordinates');
     });
 
     it('initializes with the map center coordinates', () => {
