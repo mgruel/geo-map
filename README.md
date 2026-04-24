@@ -68,6 +68,7 @@ can be pointed at different Photon instances without rebuilding.
 
 ## CI
 
-GitHub Actions (`.github/workflows/node.js.yml`) runs `npm ci`, `npm run lint`,
-`npm test`, and `npm run build` on every push and pull request against a
-matrix of Node.js 20.x, 22.x, and 24.x.
+GitHub Actions (`.github/workflows/node.js.yml`) runs `npm ci`, `npm run check`,
+`npm run lint`, `npm test`, and `npm run build` on every push and pull
+request against a matrix of Node.js 22.x and 24.x (both LTS). The
+production Docker image is based on `node:24-alpine`.
