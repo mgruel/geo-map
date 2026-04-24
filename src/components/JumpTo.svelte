@@ -45,14 +45,19 @@
             switch (key) {
                 case "Enter": {
                     const parts = this._input?.value.split(",");
-                    if (parts.length >= 2) {
-                        const lat = parseFloat(parts[0]);
-                        const lng = parseFloat(parts[1]);
-                        if (!isNaN(lat) && !isNaN(lng)) {
-                            this._map.flyTo([lat, lng], this._map.getZoom(), { animate: true });
-                            this._input.value = "";
-                        }
+                    if (parts.length !== 2) {
+                        return;
                     }
+                    const lat = parseFloat(parts[0]);
+                    const lng = parseFloat(parts[1]);
+                    if (isNaN(lat) || isNaN(lng)) {
+                        return;
+                    }
+                    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                        return;
+                    }
+                    this._map.flyTo([lat, lng], this._map.getZoom(), { animate: true });
+                    this._input.value = "";
                 }
             }
         },
