@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { isHttpError } from '@sveltejs/kit';
 
 const envMock = vi.hoisted(() => ({ env: { PHOTON_URL: '' } }));
@@ -12,12 +12,17 @@ type RequestEvent = Parameters<typeof GET>[0];
 async function invoke(
     params: Record<string, string>,
     fetchImpl: typeof fetch = vi.fn() as unknown as typeof fetch,
+    clientAddress = '203.0.113.7',
 ): Promise<Response> {
     const url = new URL('http://localhost/api/geocode');
     for (const [key, value] of Object.entries(params)) {
         url.searchParams.set(key, value);
     }
-    const event = { url, fetch: fetchImpl } as unknown as RequestEvent;
+    const event = {
+        url,
+        fetch: fetchImpl,
+        getClientAddress: () => clientAddress,
+    } as unknown as RequestEvent;
     try {
         return (await GET(event)) as Response;
     } catch (err) {
@@ -31,6 +36,13 @@ async function invoke(
 describe('GET /api/geocode', () => {
     beforeEach(() => {
         envMock.env.PHOTON_URL = 'https://photon.example.com';
+        vi.spyOn(console, 'log').mockImplementation(() => {});
+        vi.spyOn(console, 'warn').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
     });
 
     it('returns 500 when PHOTON_URL is missing', async () => {
@@ -122,5 +134,48 @@ describe('GET /api/geocode', () => {
         await invoke({ q: 'Berlin' }, fetchImpl as unknown as typeof fetch);
         const calledWith = fetchImpl.mock.calls[0][0] as URL;
         expect(calledWith.href).toBe('https://photon.example.com/api?q=Berlin&limit=5');
+    });
+
+    it('emits a structured success log line with ip, query, and result count', async () => {
+        const logSpy = vi.spyOn(console, 'log');
+        const fetchImpl = vi.fn().mockResolvedValue(
+            new Response(
+                JSON.stringify({ type: 'FeatureCollection', features: [{}, {}, {}] }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } },
+            ),
+        );
+        const res = await invoke(
+            { q: 'Berlin', limit: '3' },
+            fetchImpl as unknown as typeof fetch,
+            '198.51.100.42',
+        );
+        expect(res.status).toBe(200);
+        expect(logSpy).toHaveBeenCalledTimes(1);
+        const payload = JSON.parse(logSpy.mock.calls[0][0] as string);
+        expect(payload).toMatchObject({
+            evt: 'geocode',
+            status: 200,
+            ip: '198.51.100.42',
+            q: 'Berlin',
+            limit: 3,
+            upstream_status: 200,
+            results: 3,
+        });
+        expect(typeof payload.duration_ms).toBe('number');
+    });
+
+    it('emits a warn log on validation failure with reason and ip', async () => {
+        const warnSpy = vi.spyOn(console, 'warn');
+        const res = await invoke({ q: 'a' }, undefined, '198.51.100.99');
+        expect(res.status).toBe(400);
+        expect(warnSpy).toHaveBeenCalledTimes(1);
+        const payload = JSON.parse(warnSpy.mock.calls[0][0] as string);
+        expect(payload).toMatchObject({
+            evt: 'geocode',
+            status: 400,
+            reason: 'validation',
+            field: 'q',
+            ip: '198.51.100.99',
+        });
     });
 });
