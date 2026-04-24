@@ -24,6 +24,21 @@ export const GET: RequestHandler = async (event) => {
     } catch {
         ctx.ip = null;
     }
+
+    // TEMP debug: surface what the upstream proxy actually sends so we can pick
+    // the right ADDRESS_HEADER for SvelteKit. Remove once the real client IP
+    // shows up in the regular `geocode` log line.
+    const headers = event.request?.headers;
+    console.log(JSON.stringify({
+        evt: 'geocode_headers_debug',
+        peer_ip: ctx.ip,
+        x_forwarded_for: headers?.get('x-forwarded-for') ?? null,
+        x_real_ip: headers?.get('x-real-ip') ?? null,
+        forwarded: headers?.get('forwarded') ?? null,
+        cf_connecting_ip: headers?.get('cf-connecting-ip') ?? null,
+        x_forwarded_proto: headers?.get('x-forwarded-proto') ?? null,
+        x_forwarded_host: headers?.get('x-forwarded-host') ?? null,
+    }));
     const finish = (status: number, extra: Record<string, unknown> = {}): void => {
         emit(status, {
             ...ctx,

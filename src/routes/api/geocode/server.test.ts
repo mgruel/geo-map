@@ -22,6 +22,7 @@ async function invoke(
         url,
         fetch: fetchImpl,
         getClientAddress: () => clientAddress,
+        request: new Request(url),
     } as unknown as RequestEvent;
     try {
         return (await GET(event)) as Response;
@@ -150,9 +151,10 @@ describe('GET /api/geocode', () => {
             '198.51.100.42',
         );
         expect(res.status).toBe(200);
-        expect(logSpy).toHaveBeenCalledTimes(1);
-        const payload = JSON.parse(logSpy.mock.calls[0][0] as string);
-        expect(payload).toMatchObject({
+        const successCall = logSpy.mock.calls
+            .map((args) => JSON.parse(args[0] as string) as Record<string, unknown>)
+            .find((p) => p.evt === 'geocode');
+        expect(successCall).toMatchObject({
             evt: 'geocode',
             status: 200,
             ip: '198.51.100.42',
@@ -161,7 +163,7 @@ describe('GET /api/geocode', () => {
             upstream_status: 200,
             results: 3,
         });
-        expect(typeof payload.duration_ms).toBe('number');
+        expect(typeof successCall?.duration_ms).toBe('number');
     });
 
     it('emits a warn log on validation failure with reason and ip', async () => {
